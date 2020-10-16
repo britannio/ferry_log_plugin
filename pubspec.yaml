@@ -1,6 +1,6 @@
 name: ferry_log_plugin
 description: A new Flutter package project.
-version: 1.0.0
+version: 1.1.0
 author:
 homepage:
 
@@ -11,7 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  ferry: ^0.7.3
+  ferry: ^0.8.0
 
 dev_dependencies:
   flutter_test:
