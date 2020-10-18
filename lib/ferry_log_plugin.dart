@@ -17,12 +17,14 @@ class FerryLogPlugin extends TypedLink {
   Stream<OperationResponse<TData, TVars>> request<TData, TVars>(
     OperationRequest<TData, TVars> request, [
     forward,
-  ]) async* {
+  ]) {
     onRequest(request);
 
-    await for (final response in forward(request)) {
+    return forward(request);
+
+    /* await for (final response in forward(request)) {
       onResponse(response);
       yield response;
-    }
+    } */
   }
 }
