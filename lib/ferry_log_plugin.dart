@@ -20,9 +20,6 @@ class FerryLogPlugin extends TypedLink {
   ]) async* {
     onRequest(request);
 
-    await for (final response in forward(request)) {
-      onResponse(response);
-      yield response;
-    }
+    yield* forward(request);
   }
 }
