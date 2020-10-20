@@ -1,5 +1,5 @@
 import 'package:ferry/ferry.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 
 import 'package:ferry_log_plugin/ferry_log_plugin.dart';
 import 'package:mockito/mockito.dart';
@@ -11,7 +11,7 @@ void main() {
   group('request', () {
     test(
       'should invoke the onRequest callback with the correct data',
-      () {
+      () async {
         // ARRANGE
         final tester = LogPluginTester();
         final plugin = FerryLogPlugin(
@@ -22,14 +22,15 @@ void main() {
         when(request.operation).thenReturn(Operation(document: DocumentNode()));
 
         // ACT
-        plugin.request(request, (_) => Stream.empty());
+        final responseStream =
+            plugin.request(request, (_) => Stream.value(null));
+
+        await responseStream.last;
 
         // ASSERT
         verify(tester.onRequest(request)).called(1);
       },
     );
-  });
-  group('response', () {
     test(
       'should invoke the OnResponse callback with the correct data',
       () async {
@@ -44,10 +45,37 @@ void main() {
         when(request.operation).thenReturn(Operation(document: DocumentNode()));
 
         // ACT
-        plugin.request(request, (_) => Stream.value(response));
+        final responseStream =
+            plugin.request(request, (_) => Stream.value(response));
+
+        await responseStream.last;
 
         // ASSERT
         verify(tester.onResponse(response));
+      },
+    );
+
+    test(
+      'should emit the response',
+      () async {
+        // ARRANGE
+        final tester = LogPluginTester();
+        final plugin = FerryLogPlugin(
+          onRequest: tester.onRequest,
+          onResponse: tester.onResponse,
+        );
+        final request = MockRequest();
+        final response = OperationResponse(operationRequest: request);
+        when(request.operation).thenReturn(Operation(document: DocumentNode()));
+
+        // ACT
+        final responseStream = plugin.request(
+          request,
+          (_) => Stream.value(response),
+        );
+
+        // ASSERT
+        expect(responseStream, emitsInOrder([response, emitsDone]));
       },
     );
   });
