@@ -8,8 +8,8 @@ import 'package:ferry/ferry.dart';
 typedef RequestCallback = void Function(OperationRequest);
 typedef ResponseCallback = void Function(OperationResponse);
 
-class FerryLogPlugin extends TypedLink {
-  FerryLogPlugin({@required this.onRequest, @required this.onResponse});
+class LogLink extends TypedLink {
+  LogLink({@required this.onRequest, @required this.onResponse});
   final RequestCallback onRequest;
   final ResponseCallback onResponse;
 

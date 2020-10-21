@@ -1,7 +1,7 @@
 import 'package:ferry/ferry.dart';
 import 'package:test/test.dart';
 
-import 'package:ferry_log_plugin/ferry_log_plugin.dart';
+import 'package:ferry_log_plugin/log_link.dart';
 import 'package:mockito/mockito.dart';
 
 import "package:gql/ast.dart";
@@ -13,8 +13,8 @@ void main() {
       'should invoke the onRequest callback with the correct data',
       () async {
         // ARRANGE
-        final tester = LogPluginTester();
-        final plugin = FerryLogPlugin(
+        final tester = LogLinkTester();
+        final plugin = LogLink(
           onRequest: tester.onRequest,
           onResponse: tester.onResponse,
         );
@@ -35,8 +35,8 @@ void main() {
       'should invoke the OnResponse callback with the correct data',
       () async {
         // ARRANGE
-        final tester = LogPluginTester();
-        final plugin = FerryLogPlugin(
+        final tester = LogLinkTester();
+        final plugin = LogLink(
           onRequest: tester.onRequest,
           onResponse: tester.onResponse,
         );
@@ -59,8 +59,8 @@ void main() {
       'should emit the response',
       () async {
         // ARRANGE
-        final tester = LogPluginTester();
-        final plugin = FerryLogPlugin(
+        final tester = LogLinkTester();
+        final plugin = LogLink(
           onRequest: tester.onRequest,
           onResponse: tester.onResponse,
         );
@@ -81,11 +81,11 @@ void main() {
   });
 }
 
-abstract class LogPluginTesterBase {
+abstract class LogLinkTesterBase {
   void onRequest(OperationRequest request);
   void onResponse(OperationResponse request);
 }
 
-class LogPluginTester extends Mock implements LogPluginTesterBase {}
+class LogLinkTester extends Mock implements LogLinkTesterBase {}
 
 class MockRequest extends Mock implements OperationRequest {}
