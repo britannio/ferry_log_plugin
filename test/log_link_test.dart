@@ -23,7 +23,7 @@ void main() {
 
         // ACT
         final responseStream =
-            plugin.request(request, (_) => Stream.value(null));
+            plugin.request(request, (_) => Stream.value(MockResponse()));
 
         await responseStream.last;
 
@@ -89,3 +89,5 @@ abstract class LogLinkTesterBase {
 class LogLinkTester extends Mock implements LogLinkTesterBase {}
 
 class MockRequest extends Mock implements OperationRequest {}
+
+class MockResponse extends Mock implements OperationResponse {}
