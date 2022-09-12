@@ -4,8 +4,8 @@ import 'dart:async';
 
 import 'package:ferry/ferry.dart';
 
-typedef RequestCallback = void Function(OperationRequest);
-typedef ResponseCallback = void Function(OperationResponse);
+typedef RequestCallback = FutureOr<void> Function(OperationRequest);
+typedef ResponseCallback = FutureOr<void> Function(OperationResponse);
 
 class LogLink extends TypedLink {
   LogLink({required this.onRequest, required this.onResponse});
@@ -17,10 +17,10 @@ class LogLink extends TypedLink {
     OperationRequest<TData, TVars> request, [
     NextTypedLink<TData, TVars>? forward,
   ]) async* {
-    onRequest(request);
+    await onRequest(request);
 
     await for (final response in forward!(request)) {
-      onResponse(response);
+      await onResponse(response);
       yield response;
     }
   }
